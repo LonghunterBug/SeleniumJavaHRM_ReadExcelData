@@ -1,0 +1,41 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="HRMSuite" verbose="1">
+    <test name="Job Title Module">
+        <classes>
+            <class name="com.longtester.hrm.testcases.JobTitleTest">
+                <methods>
+                    <include name="testAddJobTitle"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Job Category Module">
+        <classes>
+            <class name="com.longtester.hrm.testcases.JobCategoryTest">
+                <methods>
+                    <include name="testAddJobCategory"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Employee Module">
+        <classes>
+            <class name="com.longtester.hrm.testcases.EmployeeTest">
+                <methods>
+                    <include name="testMainFlow"/>
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+<!--    <test name="Location Module">-->
+<!--        <classes>-->
+<!--            <class name="com.longtester.hrm.testcases.LocationTest"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="User Management Module">-->
+<!--        <classes>-->
+<!--            <class name="com.longtester.hrm.testcases.UserManagementTest"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
+</suite>
