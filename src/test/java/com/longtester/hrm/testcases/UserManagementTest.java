@@ -1,5 +1,6 @@
 package com.longtester.hrm.testcases;
 
+import com.longtester.helpers.ExcelHelper;
 import com.longtester.hrm.common.BaseTest;
 import com.longtester.hrm.common.DataTest;
 import com.longtester.hrm.pages.BasePage;
@@ -21,36 +22,62 @@ public class UserManagementTest extends BaseTest {
     }
     @Test(priority = 1)
     public void testAddNewUser(){
-        loginPage.loginHRM("Admin","admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetUM = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetUM.setExcelFile("src/test/resources/testdata/HRM.xlsx","User Management");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1), sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        userMangementPage.addNewUser(DataTest.role,DataTest.status,DataTest.employee_name,DataTest.username_addnew,DataTest.password_addnew,DataTest.confirmpassword_addnew);
+        userMangementPage.addNewUser
+                (sheetUM.getCellData("Role",1),
+                sheetUM.getCellData("Status",1),
+                sheetUM.getCellData("Employee Name",1),
+                sheetUM.getCellData("Username",1),
+                sheetUM.getCellData("Password",1),
+                sheetUM.getCellData("Confirm Password",1));
         basePage.verifySuccessMessageIsDisplayed();
-        userMangementPage.verifyUserIsDisplayedInTable(DataTest.username_addnew);
+        userMangementPage.verifyUserIsDisplayedInTable(sheetUM.getCellData("Username",1));
     }
     @Test(priority = 2)
     public void testLoginSuccessWithRegisteredAccount(){
-        loginPage.loginHRM(DataTest.username_addnew,DataTest.password_addnew);
+        ExcelHelper sheetLogin = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",2)
+                , sheetLogin.getCellData("Password",2));
         basePage.verifyMainMenuDisplayed();
     }
     @Test(priority = 3)
     public void testLoginFailWithInvalidCredential(){
-        loginPage.loginHRM(DataTest.username_addnew,"");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",3)
+                , sheetLogin.getCellData("Password",3));
         loginPage.verifyErrorInvalidCredentialDisplayed();
     }
     @Test(priority = 4)
     public void testEditUser(){
-        loginPage.loginHRM("Admin","admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetUM = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetUM.setExcelFile("src/test/resources/testdata/HRM.xlsx","User Management");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        userMangementPage.editEmployeeName(DataTest.username_addnew);
+        userMangementPage.editEmployeeName(sheetUM.getCellData("Username",1));
         basePage.verifySuccessMessageIsDisplayed();
-        userMangementPage.verifyEmployeeNameIsUpdated(DataTest.username_addnew);
+        userMangementPage.verifyEmployeeNameIsUpdated(sheetUM.getCellData("Username",1));
     }
     @Test(priority = 5)
     public void testDeleteUser(){
-        loginPage.loginHRM("Admin","admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetUM = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetUM.setExcelFile("src/test/resources/testdata/HRM.xlsx","User Management");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        userMangementPage.deleteUser(DataTest.username_addnew);
+        userMangementPage.deleteUser(sheetUM.getCellData("Username",1));
         basePage.verifySuccessMessageIsDisplayed();
-        userMangementPage.verifyUserNotDisplayedInTable(DataTest.username_addnew);
+        userMangementPage.verifyUserNotDisplayedInTable(sheetUM.getCellData("Username",1));
     }
 }

@@ -1,5 +1,6 @@
 package com.longtester.hrm.pages;
 
+import com.longtester.helpers.ExcelHelper;
 import com.longtester.hrm.common.DataTest;
 import com.longtester.keywords.WebUI;
 import net.bytebuddy.dynamic.scaffold.TypeWriter;
@@ -29,10 +30,6 @@ public class UserMangementPage {
     private By buttonSave = By.xpath("//button[normalize-space()='Save']");
 
 
-
-
-
-
     public void addNewUser(String role, String status, String employee_name, String username, String password, String confirmpassword) {
         WebUI.clickElement(buttonAddNewUser);
         WebUI.clickElement(selectUserRole);
@@ -47,30 +44,33 @@ public class UserMangementPage {
         WebUI.setText(inputConfirmPassword, confirmpassword);
         WebUI.clickElement(buttonSave);
     }
+
     public void editEmployeeName(String username) {
+        ExcelHelper sheetUM = new ExcelHelper();
+        sheetUM.setExcelFile("src/test/resources/testdata/HRM.xlsx", "User Management");
         searchByUserName(username);
         WebUI.clickElement(buttonEdit);
         WebUI.clearTextWithKey(inputEmployeeName);
-        WebUI.setText(inputEmployeeName, DataTest.update_employeename);
-        WebUI.waitForElementVisible(By.xpath("//label[text()='Employee Name']/parent::div/following-sibling::div//span[text()='" + DataTest.update_employeename + "']"));
-        WebUI.clickElement(By.xpath("//label[text()='Employee Name']/parent::div/following-sibling::div//span[text()='" + DataTest.update_employeename + "']"));
+        WebUI.setText(inputEmployeeName, sheetUM.getCellData("Employee Name", 2));
+        WebUI.waitForElementVisible(By.xpath("//label[text()='Employee Name']/parent::div/following-sibling::div//span[text()='" + sheetUM.getCellData("Employee Name", 2) + "']"));
+        WebUI.clickElement(By.xpath("//label[text()='Employee Name']/parent::div/following-sibling::div//span[text()='" + sheetUM.getCellData("Employee Name", 2) + "']"));
         WebUI.clickElement(buttonSave);
     }
+
     public void deleteUser(String username) {
         searchByUserName(username);
         WebUI.clickElement(buttonDelete);
         WebUI.clickElement(buttonConfirmDelete);
     }
 
-
-
     public void verifyUserIsDisplayedInTable(String username) {
         WebUI.sleep(5);
         searchByUserName(username);
         WebUI.highlightElement(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[2]/div[text()='" + username + "']"));
         By text = By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[2]/div[text()='" + username + "']");
-        WebUI.verifyDisplay(text,WebUI.isElementDisplayed(text),"Username not display");
+        WebUI.verifyDisplay(text, WebUI.isElementDisplayed(text), "Username not display");
     }
+
     public void verifyUserNotDisplayedInTable(String username) {
         WebUI.sleep(5);
         WebUI.clearTextWithKey(inputSearchUserName);
@@ -78,15 +78,17 @@ public class UserMangementPage {
         WebUI.clickElement(buttonSearch);
         WebUI.sleep(2);
         List<WebElement> listusername = WebUI.getWebElements(listUsername);
-        WebUI.verifyNotDisplay1(listusername,username,username +" is still displayed in table");
+        WebUI.verifyNotDisplay1(listusername, username, username + " is still displayed in table");
     }
 
     public void verifyEmployeeNameIsUpdated(String username) {
         WebUI.sleep(5);
+        ExcelHelper sheetEmployee = new ExcelHelper();
+        sheetEmployee.setExcelFile("src/test/resources/testdata/HRM.xlsx", "Employee");
         searchByUserName(username);
         WebUI.highlightElement(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[4]"));
         String actual_employeename = WebUI.getElementText(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[4]"));
-        WebUI.verifyEqual(actual_employeename, DataTest.employee_firstname + " " + DataTest.employee_lastname, "Employee name is not macthed");
+        WebUI.verifyEqual(actual_employeename, sheetEmployee.getCellData("First name",1) + " " + sheetEmployee.getCellData("Last name",1), "Employee name is not macthed");
     }
 
 

@@ -1,0 +1,13 @@
+Cách đọc data từ file excel
+
+Cách 1: Gọi hàm getCellData(String columnName, int rowIndex) trong hàm của page để get data từ file excel.
+vd: WebUI.setText(inputUserName, excelHelper.getCellData("Username",1));
+==> Cách này chỉ get được trên 1 dòng. Nếu get dòng khác thì phải sửa index -> tốn công sửa index nhiều chỗ.
+
+Cách 2: Gọi hàm getCellData(String columnName, int rowIndex) trong hàm của page để get data từ file excel và truyền tham số row trên hàm để giải quyết việc get linh hoạt nhiều data
+vd: public void addNewUser(int row){
+WebUI.setText(inputUserName, excelHelper.getCellData("Username",row));
+}
+==> Cách này get data linh hoạt hơn.
+
+Nhược điểm 2 cách trên: chỉ chạy được 1 dòng data.
