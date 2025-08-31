@@ -1,5 +1,6 @@
 package com.longtester.hrm.pages;
 
+import com.longtester.helpers.ExcelHelper;
 import com.longtester.hrm.common.DataTest;
 import com.longtester.keywords.WebUI;
 import org.openqa.selenium.By;
@@ -60,7 +61,9 @@ public class JobTitlePage {
         WebUI.highlightElement(listButtonEdit,index);
         listButtonEdit.get(index).click();
         WebUI.clearTextWithKey(inputJobTitle);
-        WebUI.setText(inputJobTitle, DataTest.job_title_edit);
+        ExcelHelper sheetJobTitle = new ExcelHelper();
+        sheetJobTitle.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Title");
+        WebUI.setText(inputJobTitle, sheetJobTitle.getCellData("Title",2));
         WebUI.clickElement(buttonSave);
     }
 
@@ -92,7 +95,7 @@ public class JobTitlePage {
 
 
     public void verifyJobTitleIsDisplayedInTable(String title) {
-        WebUI.sleep(5);
+        WebUI.sleep(4);
         boolean check = false;
         List<WebElement> e = WebUI.getWebElements(listJobTitle);
         for (WebElement element : e) {

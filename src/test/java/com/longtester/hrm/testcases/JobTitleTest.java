@@ -1,5 +1,6 @@
 package com.longtester.hrm.testcases;
 
+import com.longtester.helpers.ExcelHelper;
 import com.longtester.hrm.common.BaseTest;
 import com.longtester.hrm.common.DataTest;
 import com.longtester.hrm.pages.BasePage;
@@ -23,28 +24,43 @@ public class JobTitleTest extends BaseTest {
     }
     @Test(priority = 1)
     public void testAddJobTitle() {
-        loginPage.loginHRM("Admin", "admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetJobTitle = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetJobTitle.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Title");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        jobTitlePage.addJobTitle(DataTest.job_title);
+        jobTitlePage.addJobTitle(sheetJobTitle.getCellData("Title",1));
         basePage.verifySuccessMessageIsDisplayed();
-        jobTitlePage.verifyJobTitleIsDisplayedInTable(DataTest.job_title);
+        jobTitlePage.verifyJobTitleIsDisplayedInTable(sheetJobTitle.getCellData("Title",1));
     }
     @Test(priority = 2)
     public void testEditJobTitle() {
-        loginPage.loginHRM("Admin", "admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetJobTitle = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetJobTitle.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Title");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        jobTitlePage.editJobTitle(DataTest.job_title);
+        jobTitlePage.editJobTitle(sheetJobTitle.getCellData("Title",1));
         basePage.verifySuccessMessageIsDisplayed();
-        jobTitlePage.verifyJobTitleIsDisplayedInTable(DataTest.job_title_edit);
+        jobTitlePage.verifyJobTitleIsDisplayedInTable(sheetJobTitle.getCellData("Title",2));
 
     }
     @Test(priority = 3)
     public void testDeleteJobTitle(){
-        loginPage.loginHRM("Admin","admin123");
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetJobTitle = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetJobTitle.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Title");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuAdmin();
-        jobTitlePage.deleteJobTitle(DataTest.job_title_edit);
+        jobTitlePage.deleteJobTitle(sheetJobTitle.getCellData("Title",2));
         basePage.verifySuccessMessageIsDisplayed();
-        jobTitlePage.verifyJobTitleNotDisplayedInTable(DataTest.job_title_edit);
+        jobTitlePage.verifyJobTitleNotDisplayedInTable(sheetJobTitle.getCellData("Title",2));
 
     }
 }

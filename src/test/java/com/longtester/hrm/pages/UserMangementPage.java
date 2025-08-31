@@ -64,7 +64,8 @@ public class UserMangementPage {
     }
 
     public void verifyUserIsDisplayedInTable(String username) {
-        WebUI.sleep(5);
+        WebUI.sleep(4);
+        WebUI.waitForElementVisible(inputSearchUserName);
         searchByUserName(username);
         WebUI.highlightElement(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[2]/div[text()='" + username + "']"));
         By text = By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[2]/div[text()='" + username + "']");
@@ -82,13 +83,14 @@ public class UserMangementPage {
     }
 
     public void verifyEmployeeNameIsUpdated(String username) {
-        WebUI.sleep(5);
+        WebUI.sleep(4);
         ExcelHelper sheetEmployee = new ExcelHelper();
         sheetEmployee.setExcelFile("src/test/resources/testdata/HRM.xlsx", "Employee");
+        WebUI.waitForElementVisible(inputSearchUserName);
         searchByUserName(username);
         WebUI.highlightElement(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[4]"));
         String actual_employeename = WebUI.getElementText(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[4]"));
-        WebUI.verifyEqual(actual_employeename, sheetEmployee.getCellData("First name",1) + " " + sheetEmployee.getCellData("Last name",1), "Employee name is not macthed");
+        WebUI.verifyEqual(actual_employeename, sheetEmployee.getCellData("First name",2) + " " + sheetEmployee.getCellData("Last name",2), "Employee name is not macthed");
     }
 
 

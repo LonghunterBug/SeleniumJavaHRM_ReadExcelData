@@ -1,5 +1,6 @@
 package com.longtester.hrm.testcases;
 
+import com.longtester.helpers.ExcelHelper;
 import com.longtester.hrm.common.BaseTest;
 import com.longtester.hrm.common.DataTest;
 import com.longtester.hrm.pages.BasePage;
@@ -23,26 +24,57 @@ public class EmployeeTest extends BaseTest {
     }
     @Test
     public void testAddNewEmployee(){
-        loginPage.loginHRM(DataTest.username_login,DataTest.password_login);
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetEmployee = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetEmployee.setExcelFile("src/test/resources/testdata/HRM.xlsx","Employee");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
         basePage.clickMenuPIM();
-        employeePage.addNewEmployee(DataTest.employee_firstname,DataTest.employee_middlename,DataTest.employee_lastname,DataTest.employee_id);
+        employeePage.addNewEmployee(
+                sheetEmployee.getCellData("First name",2),
+                sheetEmployee.getCellData("Middle name",2),
+                sheetEmployee.getCellData("Last name",2),
+                sheetEmployee.getCellData("ID",2));
         basePage.verifySuccessMessageIsDisplayed();
         basePage.clickMenuPIM();
-        employeePage.verifyEmployeeIsDisplayedInTable(DataTest.employee_id);
+        employeePage.verifyEmployeeIsDisplayedInTable(sheetEmployee.getCellData("ID",2));
     }
     @Test
     public void testMainFlow(){
-        loginPage.loginHRM(DataTest.username_login,DataTest.password_login);
+        ExcelHelper sheetLogin = new ExcelHelper();
+        ExcelHelper sheetEmployee = new ExcelHelper();
+        ExcelHelper sheetJobTitle = new ExcelHelper();
+        ExcelHelper sheetJobCategory = new ExcelHelper();
+        sheetLogin.setExcelFile("src/test/resources/testdata/HRM.xlsx","Login");
+        sheetEmployee.setExcelFile("src/test/resources/testdata/HRM.xlsx","Employee");
+        sheetJobTitle.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Title");
+        sheetJobCategory.setExcelFile("src/test/resources/testdata/HRM.xlsx","Job Category");
+        loginPage.loginHRM(sheetLogin.getCellData("Username",1)
+                , sheetLogin.getCellData("Password",1));
+
         basePage.clickMenuPIM();
-        employeePage.addNewEmployee(DataTest.employee_firstname,DataTest.employee_middlename,DataTest.employee_lastname,DataTest.employee_id);
+        employeePage.addNewEmployee(
+                sheetEmployee.getCellData("First name",3),
+                sheetEmployee.getCellData("Middle name",3),
+                sheetEmployee.getCellData("Last name",3),
+                sheetEmployee.getCellData("ID",3));
         basePage.clickMenuPIM();
-        employeePage.verifyEmployeeIsDisplayedInTable(DataTest.employee_id);
+        employeePage.verifyEmployeeIsDisplayedInTable(sheetEmployee.getCellData("ID",3));
         employeePage.clickEdit();
-        employeeDetailPage.updatePersonalDetail(DataTest.driverNumber,DataTest.gender);
-        employeeDetailPage.updateJob(DataTest.job_title,DataTest.job_category);
+        employeeDetailPage.updatePersonalDetail(
+                sheetEmployee.getCellData("Driver number",3),
+                sheetEmployee.getCellData("Gender",3));
+        employeeDetailPage.updateJob(
+                sheetJobTitle.getCellData("Title",1),
+                sheetJobCategory.getCellData("Title",1));
         employeeDetailPage.clickMenuPersonalDetail();
-        employeeDetailPage.verifyPersonalDetailUpdated(DataTest.driverNumber,DataTest.gender);
+        employeeDetailPage.verifyPersonalDetailUpdated(
+                sheetEmployee.getCellData("Driver number",3),
+                sheetEmployee.getCellData("Gender",3));
         employeeDetailPage.clickMenuJob();
-        employeeDetailPage.verifyJobUpdated(DataTest.job_title,DataTest.job_category);
+        employeeDetailPage.verifyJobUpdated(
+                sheetJobTitle.getCellData("Title",1),
+                sheetJobCategory.getCellData("Title",1));
     }
 }

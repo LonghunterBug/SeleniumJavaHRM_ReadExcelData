@@ -36,7 +36,8 @@ public class EmployeePage {
         WebUI.clickElement(buttonEdit);
     }
     public void verifyEmployeeIsDisplayedInTable(String id){
-        //WebUI.sleep(4);
+        //WebUI.sleep(3);
+        WebUI.waitForElementVisible(inputSearchID);
         searchByID(id);
         WebUI.highlightElement(By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[2]/div[text()='" + id + "']"));
         By textfirtname_middlename = By.xpath("//div[contains(@class,'table-body')]//div[contains(@class,'table-row')]/div[3]/div");
