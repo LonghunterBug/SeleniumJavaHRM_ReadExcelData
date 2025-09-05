@@ -1,7 +1,7 @@
 package com.longtester.hrm.common;
 
 public class DataTest {
-    
+
     // Data for Job Category
     public static String job_category = "IT";
     public static String job_category_edit = "IT - Updated";

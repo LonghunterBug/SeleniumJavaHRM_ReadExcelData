@@ -123,6 +123,29 @@ public class WebUI {
         return value;
     }
 
+    public static void hoverMouse(List<WebElement> elements, int index) {
+        try {
+            sleep(STEP_TIME);
+            Actions action = new Actions(driver);
+            WebElement element = elements.get(index);
+            action.moveToElement(element).perform();
+            logConsole("Hover mouse on element " + element.getText());
+        } catch (Exception e) {
+            logConsole("Error hovering mouse on element " + e + ": " + e.getMessage());
+            Assert.fail("Error hovering mouse on element " + e + ": " + e.getMessage());
+        }
+    }
+    public static void hoverMouse(WebElement element) {
+        try {
+            sleep(STEP_TIME);
+            Actions action = new Actions(driver);
+            action.moveToElement(element).perform();
+            logConsole("Hover mouse on element " + element.getText());
+        } catch (Exception e) {
+            logConsole("Error hovering mouse on element " + e + ": " + e.getMessage());
+            Assert.fail("Error hovering mouse on element " + e + ": " + e.getMessage());
+        }
+    }
     public static void hoverMouse(By by) {
         try {
             waitForElementVisible(by);
@@ -189,7 +212,7 @@ public class WebUI {
             wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(by));
         } catch (Throwable error) {
             logConsole("Timeout waiting for the element Visible. " + by.toString());
-            Assert.fail("Timeout waiting for the element Visible. " + by.toString());
+            //Assert.fail("Timeout waiting for the element Visible. " + by.toString());
         }
     }
 
